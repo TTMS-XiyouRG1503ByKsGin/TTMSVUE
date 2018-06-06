@@ -6,14 +6,16 @@
                 <div class="CinemaName-content-main-title">
                     <span class="CinemaName-content-main-id">影厅ID</span>
                     <span class="CinemaName-content-main-name">影厅名称</span>
+                    <span class="CinemaName-content-main-location">影厅地点</span>
                     <span class="CinemaName-content-main-action">操作</span>
                 </div>
                 <div class="CinemaName-content-main-list">
-                    <div class="CinemaName-content-main-list-item ">
-                        <span class="CinemaName-content-main-id">20180605</span>
-                        <span class="CinemaName-content-main-name">花儿朵朵开</span>
+                    <div class="CinemaName-content-main-list-item " v-for="(item, index) in cinema" :key="item.theaterId">
+                        <span class="CinemaName-content-main-id">{{ item.theaterId }}</span>
+                        <span class="CinemaName-content-main-name">{{ item.theaterName }}</span>
+                        <span class="CinemaName-content-main-location">{{ item.theaterLocation }}</span>
                         <span class="CinemaName-content-main-action">
-                            <a href="javascript:void(0)" class="CinemaName-content-main-action-mor action-btn">详情</a>
+                            <a href="javascript:void(0)" class="CinemaName-content-main-action-mor action-btn" @click="() =>{getCinemaInfo(index)}">详情</a>
                             <a href="javascript:void(0)" class="CinemaName-content-main-action-del action-btn">删除</a>
                             <a href="javascript:void(0)" class="CinemaName-content-main-action-upd action-btn">修改</a>
                         </span>
@@ -25,11 +27,30 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
     name: 'cinemaName',
     data(){
         return{
 
+        }
+    },
+    created(){
+        this.$store.dispatch("GETALLCINEMA");
+    },
+    computed: {
+        ...mapState({
+            cinema(state){
+                return state.manger.cinema;
+            }
+        })
+    },
+    methods:{
+        getCinemaInfo(index){
+            const id = this.cinema[index].theaterId;
+            const count = this.cinema[index].theaterSeatColsCount;
+            const row = this.cinema[index].theaterSeatRowsCount;
+            this.$router.push(`/admin/cinema/info?id=${id}&count=${count}&row=${row}`);
         }
     }
 }
@@ -82,6 +103,11 @@ export default {
                     overflow: hidden;
                     white-space: nowrap;
                     width: 200px;
+                    text-align: center;
+                }
+                &-location{
+                    width: 200px;
+                    padding: 0 20px 0 10px;
                     text-align: center;
                 }
                 &-action{

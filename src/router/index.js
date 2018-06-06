@@ -12,6 +12,8 @@ import PlanName from '../components/PlanName.vue'
 import Ticket from '../components/Ticket.vue'
 import User from '../components/User.vue';
 
+import store from '../store/index.js';
+
 Vue.use(Router)
 
 const router = new Router({
@@ -91,27 +93,24 @@ const router = new Router({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.authPage) { //login
-//     //判断状态中token是否为空，来判断是否登陆
-//     // if(store.state.auth.token){
-//     //     next("/admin");
-//     // }
-//     next();
-//   }else{
-//       //进入非Login组件，即进入Admin组件时
-//       // if(store.state.auth.token){
-//       //   //对axios设置全局配置，对所有请求都有效
-//       //   axios.defaults.headers.common["Authorization"] = "Bearer " + store.state.auth.token;
-//       //   next();
-//       // }else{
-//       //     //进入Admin组件状态中token为空时
-//       //     next("/admin/login");
-//       // }
-//       next('/admin/cinema/name');
-//       // next();
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (to.meta.authPage) { //login
+    //判断状态中token是否为空，来判断是否登陆
+    if(store.state.auth.token){
+        next("/admin");
+    }
+    next();
+  }else{
+      //进入非Login组件，即进入Admin组件时
+      if(store.state.auth.token){
+        //对axios设置全局配置，对所有请求都有效
+        next();
+      }else{
+          //进入Admin组件状态中token为空时
+          next("/login");
+      }
+  }
+})
 
 
 export default router;

@@ -44,15 +44,32 @@ export default {
             });
         },
         login(){
+            if(this.vercode === ''){
+                this.$pointTip("验证码不能为空~");
+                return;
+            }
+            if(this.username === ''){
+                this.$pointTip("用户名不能为空~");
+                return;
+            }
+            if(this.password === ''){
+                this.$pointTip("密码不能为空~");
+                return;
+            }
             let info = {
                 username: this.username,
                 password: this.password,
                 vercode: this.vercode
             }
             this.$store.dispatch("login", info).then(res => {
-                console.log(res);
-            })
-        }
+                this.$pointTip(res.msg);
+                if(res.result === 200){
+                    this.$router.push("/admin");
+                }
+            }).catch(e => {
+                // this.$pointTip(e);
+            });
+        },
     }
 }
 </script>

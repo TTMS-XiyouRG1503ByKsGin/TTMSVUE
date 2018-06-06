@@ -36,10 +36,10 @@ export default {
     overflow: hidden;
     display: flex;
     &-left{
-      width: 200px;
+      width: 180px;
       height: 100%;
       background-color: #313541;
-      min-width: 200px;
+      min-width: 180px;
       &-logo{
         width: 100%;
         height: 90px;
