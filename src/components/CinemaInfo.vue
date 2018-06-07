@@ -66,7 +66,7 @@ export default {
         ...mapMutations(["clearCinemaMore"]),
         getCinemaMoreById(id){
             this.$store.dispatch("GETCINEMAMOREBYID", id).then(res=>{
-                this.$pointTip(res.msg);
+                // this.$pointTip(res.msg);
             });
         },
         layout(count ,row){
@@ -115,13 +115,17 @@ export default {
             this.getCinemaMoreById(id);
         },
         updateSeatStatus(item){
-            let obj = {
-                theaterId: item.theaterId,
-                seatId: item.seatId,
-                status: !item.status,
-            }
-            this.$store.dispatch("UPDATE_CINEMASEAT_BYID",obj).then(res=>{
-                this.$pointTip(res.msg);
+            this.$confirm("此操作将修改座位状态信息").then(()=>{
+                let obj = {
+                    theaterId: item.theaterId,
+                    seatId: item.seatId,
+                    status: !item.status,
+                }
+                this.$store.dispatch("UPDATE_CINEMASEAT_BYID",obj).then(res=>{
+                    this.$pointTip(res.msg);
+                });
+            }).catch(e=>{
+
             });
         }
     }
@@ -202,7 +206,7 @@ export default {
                     font-weight: bold;
                 }
                 &-seat{
-                    height: 100%;
+                    // height: 100%;
                     margin: 0 auto;
                     &-item{
                         position: relative;

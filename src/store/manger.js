@@ -57,7 +57,59 @@ export default{
                     reject(e);
                 })
             })
+        },
+        ADD_CINEMA({commit}, obj){
+            return api.addCinema(obj.theaterName, obj.theaterLocation, obj.seatRowCount, obj.seatColCount).then(res=>{
+                if(res.data.result === 200){
+                    api.getCinemaAll().then(res => {
+                        if(res.data.result === 200){
+                            let arr = res.data.data;
+                            commit("getAllCinema", arr);
+                        }
+                    });
+                }
+                return new Promise((resolve,reject)=>{
+                    resolve(res.data);
+                })
+            }).catch(e=>{
+                console.log(e);
+            })
+        },
+        DEL_CINEMA_BYID({commit},obj){
+            return api.delCinemaById(obj.theaterId, obj.theaterName, obj.location, obj.mapSite).then(res=>{
+                if(res.data.result === 200){
+                    api.getCinemaAll().then(res => {
+                        if(res.data.result === 200){
+                            let arr = res.data.data;
+                            commit("getAllCinema", arr);
+                        }
+                    });
+                }
+                return new Promise((resolve, reject)=> {
+                    resolve(res.data);
+                })
+            }).catch(e=>{
+                console.log(e);
+            })
+        },
+        UPD_CINEMA_BYID({commit},obj){
+            return api.updCinemaById(obj.theaterId, obj.theaterName, obj.location).then(res=>{
+                if(res.data.result === 200){
+                    api.getCinemaAll().then(res => {
+                        if(res.data.result === 200){
+                            let arr = res.data.data;
+                            commit("getAllCinema", arr);
+                        }
+                    });
+                }
+                return new Promise((resolve, reject)=> {
+                    resolve(res.data);
+                })
+            }).catch(e=>{
+                console.log(e);
+            });
         }
+        
     },
     mutations:{
         getAllCinema(state, obj){

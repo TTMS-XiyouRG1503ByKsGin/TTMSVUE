@@ -1,7 +1,7 @@
 <template>
     <div class="CinemaName">
         <div class="CinemaName-content">
-            <div class="CinemaName-content-btn content-btn">添加影厅</div>
+            <div class="CinemaName-content-btn content-btn" @click="addCinema">添加影厅</div>
             <div class="CinemaName-content-main">
                 <div class="CinemaName-content-main-title">
                     <span class="CinemaName-content-main-id">影厅ID</span>
@@ -16,23 +16,32 @@
                         <span class="CinemaName-content-main-location">{{ item.theaterLocation }}</span>
                         <span class="CinemaName-content-main-action">
                             <a href="javascript:void(0)" class="CinemaName-content-main-action-mor action-btn" @click="() =>{getCinemaInfo(index)}">详情</a>
-                            <a href="javascript:void(0)" class="CinemaName-content-main-action-del action-btn">删除</a>
-                            <a href="javascript:void(0)" class="CinemaName-content-main-action-upd action-btn">修改</a>
+                            <a href="javascript:void(0)" class="CinemaName-content-main-action-del action-btn" @click="()=>{delCinema(index)}">删除</a>
+                            <a href="javascript:void(0)" class="CinemaName-content-main-action-upd action-btn" @click="()=>{updCinema(index)}">修改</a>
                         </span>
                     </div>
                 </div>
             </div>
         </div>
+        <ActionBox :actionType="actionType" :visible="visible" :title="title" :baseVal="baseVal" :listArr="listArr" @changeVisible="changeVisible"></ActionBox>
     </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
+import ActionBox from './ActionBox.vue';
 export default {
     name: 'cinemaName',
+    components:{
+        ActionBox
+    },
     data(){
         return{
-
+            actionType: "",
+            visible: false,
+            title: "",
+            baseVal: -1,
+            listArr: [],
         }
     },
     created(){
@@ -51,6 +60,42 @@ export default {
             const count = this.cinema[index].theaterSeatColsCount;
             const row = this.cinema[index].theaterSeatRowsCount;
             this.$router.push(`/admin/cinema/info?id=${id}&count=${count}&row=${row}`);
+        },
+        addCinema(){
+            this.actionType = "add";
+            this.visible = true;
+            this.title = "添加";
+            this.listArr = [
+                { name: "影厅名称", ref: "theaterName" },
+                { name: "影厅地点", ref: "theaterLocation" },
+                { name: "行数", ref: "seatRowCount" },
+                { name: "列数", ref: "seatColCount" }
+            ];
+
+        },
+        changeVisible(visible){
+            this.visible = visible;
+        },
+        delCinema(index){
+            this.$confirm("此操作将删除该影厅的全部信息").then(res=>{
+                let id = this.cinema[index].theaterId;
+                this.$store.dispatch("DEL_CINEMA_BYID",id).then(res=>{
+                    this.$pointTip(res.msg);
+                })
+            }).catch(e=>{
+                console.log(e);
+            });
+        },
+        updCinema(index){
+            const id = this.cinema[index].theaterId;
+            this.actionType = "update";
+            this.visible = true;
+            this.title = "修改";
+            this.baseVal = id;
+            this.listArr = [
+                { name: "影厅名称", ref: "theaterName" },
+                { name: "影厅地点", ref: "location" },
+            ];
         }
     }
 }

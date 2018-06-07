@@ -11,7 +11,11 @@
     <div class="Admin-right">
       <div class="Admin-right-header">
         <span class="Admin-right-header-topic">剧院票务管理系统</span>
-        <span class="Admin-right-header-login">登录</span>
+        <span v-if="this.token === ''" class="Admin-right-header-login">登录</span>
+        <span v-else class="Admin-right-header-account">
+          欢迎：{{this.account}}
+          <span class="Admin-right-header-account-exit" @click="exit">退出</span>
+        </span>
       </div>
       <router-view></router-view>
     </div>
@@ -24,6 +28,20 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  computed: {
+    account(){
+      return this.$store.state.auth.account;
+    },
+    token(){
+      return this.$store.state.auth.token;
+    }
+  },
+  methods:{
+    exit(){
+      this.$store.commit("deleteToken");
+      this.$router.push("/login");
     }
   }
 }
@@ -81,6 +99,31 @@ export default {
           float: right;
           cursor: pointer;
           margin-right: 10px;
+        }
+        &-account{
+          float: right;
+          position: relative;
+          cursor: pointer;
+          margin-right: 10px;
+          &:hover{
+            .Admin-right-header-account-exit{
+              display: block;
+            }
+          }
+          &-exit{
+            position: absolute;
+            text-align: center;
+            line-height: 20px;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            overflow: hidden;
+            display: none;
+            font-size: 14px;
+            padding: 5px 10px;
+            border: 1px solid #DBD9E1;
+            border-radius: 4px;
+          }
         }
       }
     }

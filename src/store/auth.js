@@ -3,6 +3,7 @@ import md5 from 'md5';
 
 export default {
     state: {
+        account: '',
         token: sessionStorage.getItem("token")
     },
     actions: {
@@ -17,9 +18,11 @@ export default {
         },
         login({commit}, obj){
             return api.login(obj).then(res => {
+                console.log(obj);
                 if(res.data.result === 200){
                     let randomStr = md5(obj.password);
-                    commit("createToken", randomStr);
+                    let data = {str: randomStr, account: obj.username};
+                    commit("createToken", data);
                 }
                 return new Promise((resolve, reject) => {
                     resolve(res.data);
@@ -28,12 +31,14 @@ export default {
         }
     },
     mutations: {
-        createToken(state, str){
-            state.token = str;
-            sessionStorage.setItem("token",str);
+        createToken(state, obj){
+            state.token = obj.str;
+            state.account = obj.account;
+            sessionStorage.setItem("token",obj.str);
         },
         deleteToken(state){
             state.token = null;
+            state.account = "";
             sessionStorage.removeItem("token");
         }
     }

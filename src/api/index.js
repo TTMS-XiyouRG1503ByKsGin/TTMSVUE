@@ -54,4 +54,49 @@ export function updateCinemaSeatById(id,status){
     });
 }
 
+//添加影厅
+export function addCinema(theaterName, location, seatRowCount, seatColCount, mapSite=""){
+    const url = `${URL}/Theater/CreateTheater`;
+    seatRowCount = Number(seatRowCount);
+    seatColCount = Number(seatColCount);
+    const data = {
+        theaterName,
+        location,
+        mapSite,
+        seatRowCount,
+        seatColCount
+    };
+    return axios({
+        url,
+        method: "POST",
+        data,
+        withCredentials: true
+    });
+}
 
+//根据id删除影厅
+export function delCinemaById(id){
+    const url = `${URL}/Theater/DeleteTheater/${id}`;
+    return axios({
+        url,
+        method: "DELETE",
+        withCredentials: true
+    });
+};
+
+//根据id修改影厅
+export function updCinemaById(theaterId, theaterName, location, mapSite=""){
+    const url = `${URL}/Theater/UpdateTheater`;
+    let data = {
+        theaterId,
+        theaterName,
+        location,
+        mapSite
+    };
+    return axios({
+        url,
+        method: "POST",
+        data,
+        withCredentials: true
+    });
+}
