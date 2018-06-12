@@ -4,7 +4,7 @@
         <h1 class="login-header-title">剧院票务管理登录</h1>
     </div>
     <div class="login-item">
-        <input type="text" placeholder="用户名" v-model="username" >
+        <input type="text" placeholder="用户名" autofocus="autofocus" v-model="username" >
     </div>
     <div class="login-item">
         <input type="password" placeholder="密码" v-model="password">
@@ -69,6 +69,7 @@ export default {
             }).catch(e => {
                 // this.$pointTip(e);
             });
+            this.$store.dispatch("getUserInfoByAccount",this.username);
         },
     }
 }

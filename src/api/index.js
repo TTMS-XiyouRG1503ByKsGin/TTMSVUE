@@ -28,6 +28,14 @@ export function login(obj){
     });
 }
 
+//根绝账号获取用户信息
+export function getUserInfoByAccount(acc){
+    const url = `${URL}/User/QueryUserByAccount/${acc}`;
+    return axios.get(url,{
+        withCredentials: true
+    });
+}
+
 //获取所有影厅
 export function getCinemaAll(){
     const url = `${URL}/Theater`;
@@ -35,6 +43,14 @@ export function getCinemaAll(){
         withCredentials: true
     });
 };
+
+//根据id获取影厅
+export function getCinemaById(id){
+    const url = `${URL}/Theater/QueryTheater/${id}`;
+    return axios.get(url,{
+        withCredentials: true
+    });
+}
 
 //根据影厅ID获取座位详情
 export function getCinemaMoreById(id){
@@ -100,3 +116,149 @@ export function updCinemaById(theaterId, theaterName, location, mapSite=""){
         withCredentials: true
     });
 }
+
+//获取剧目信息
+export function getAllPlay(){
+    const url = `${URL}/Programme/GetWithImagePath`;
+    return axios.get(url,{
+        withCredentials: true
+    });
+}
+
+//根据id获取剧目信息
+export function getPlayById(id){
+    const url = `${URL}/Programme/QueryProgrammeById/${id}`;
+    return axios.get(url,{
+        withCredentials: true
+    });
+}
+
+//根据id删除剧目
+export function delPlayById(id){
+    const url = `${URL}/Programme/DeleteProgramme/${id}`;
+    return axios({
+        url,
+        method: "DELETE",
+        withCredentials: true
+    });
+}
+
+//根据id更新剧目
+export function updPlayById(programmeId, programmeName, programmeDruation, programmeTags, programmeProfile, file){
+    const url = `${URL}/Programme/UpdateProgramme`;
+    let data = new FormData();
+    data.append("programmeId", programmeId);
+    data.append("programmeName", programmeName);
+    data.append("duration", programmeDruation);
+    data.append("tags", programmeTags);
+    data.append("profile", programmeProfile);
+    data.append("file", file);
+
+    return axios({
+        url,
+        method: "POST",
+        data,
+        withCredentials: true
+    });
+}
+
+//添加剧目
+export function addPlay(programmeName, duration, tags, profile, file){
+    const url = `${URL}/Programme/CreateProgrammeAndPlayBill`;
+    let data = new FormData();
+    data.append("programmeName",programmeName);
+    data.append("duration", duration);
+    data.append("tags", tags);
+    data.append("profile", profile);
+    data.append("file", file);
+
+    return axios({
+        url,
+        method: "POST",
+        data,
+        withCredentials: true
+    });
+}
+
+//获取演出计划
+export function getAllPlan(){
+    const url = `${URL}/Good/GetWithName`;
+    return axios.get(url,{
+        withCredentials: true
+    });
+}
+
+//添加演出计划
+export function addPlan(obj){
+    let url = `${URL}/Good/CreateGood`;
+    let data = {
+        programmeId: obj.programmeId,
+        theaterId: obj.theaterId,
+        performance: obj.performance,
+        playDate: obj.playDate,
+        price: obj.price
+    };
+    return axios({
+        url,
+        method: "POST",
+        data,
+        withCredentials: true
+    });
+}
+
+//根据id删除演出计划
+export function delPlanById(id){
+    const url = `${URL}/Good/DeleteGood/${id}`;
+    return axios({
+        url,
+        method: "DELETE",
+        withCredentials: true
+    });
+}
+
+//根据id修改演出计划
+export function updPlanById(obj){
+    const url = `${URL}/Good/UpdateGood`;
+    let data = {
+        goodId: obj.goodId,
+        programmeId: obj.programmeId,
+        theaterId: obj.theaterId,
+        performance: obj.performance,
+        playDate: obj.playDate,
+        price: obj.price
+    };
+    return axios({
+        url,
+        method: "POST",
+        data,
+        withCredentials: true
+    });
+}
+
+//根据演出计划id获取票的信息
+export function getTicketMoreById(id){
+    const url = `${URL}/Ticket/SelectTicket/${id}`;
+    return axios.get(url,{
+        withCredentials: true
+    });
+}
+
+//根据id订票
+export function selectTicket(id){
+    const url = `${URL}/Ticket/SellTicket/${id}`;
+    return axios({
+        url,
+        method:"post",
+        withCredentials: true
+    });
+};
+
+//根据ticketId和userId支付
+export function payTicket(obj){
+    const url = `${URL}/Ticket/PayTicket/${obj.ticketId}&${obj.userId}`;
+    return axios({
+        url,
+        method: "POST",
+        withCredentials: true
+    });
+};

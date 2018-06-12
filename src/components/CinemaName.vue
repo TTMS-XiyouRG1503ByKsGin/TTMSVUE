@@ -57,19 +57,19 @@ export default {
     methods:{
         getCinemaInfo(index){
             const id = this.cinema[index].theaterId;
-            const count = this.cinema[index].theaterSeatColsCount;
-            const row = this.cinema[index].theaterSeatRowsCount;
-            this.$router.push(`/admin/cinema/info?id=${id}&count=${count}&row=${row}`);
+            // const count = this.cinema[index].theaterSeatColsCount;
+            // const row = this.cinema[index].theaterSeatRowsCount;
+            this.$router.push(`/admin/cinema/info?id=${id}`);
         },
         addCinema(){
-            this.actionType = "add";
+            this.actionType = "addCinema";
             this.visible = true;
             this.title = "添加";
             this.listArr = [
-                { name: "影厅名称", ref: "theaterName" },
-                { name: "影厅地点", ref: "theaterLocation" },
-                { name: "行数", ref: "seatRowCount" },
-                { name: "列数", ref: "seatColCount" }
+                { name: "影厅名称", ref: "theaterName", type: "text" },
+                { name: "影厅地点", ref: "theaterLocation", type: "text" },
+                { name: "行数", ref: "seatRowCount", type: "text" },
+                { name: "列数", ref: "seatColCount", type: "text" }
             ];
 
         },
@@ -88,13 +88,14 @@ export default {
         },
         updCinema(index){
             const id = this.cinema[index].theaterId;
-            this.actionType = "update";
+            let item = this.cinema[index];
+            this.actionType = "updateCinema";
             this.visible = true;
             this.title = "修改";
             this.baseVal = id;
             this.listArr = [
-                { name: "影厅名称", ref: "theaterName" },
-                { name: "影厅地点", ref: "location" },
+                { name: "影厅名称", ref: "theaterName", type: "text", content: item.theaterName },
+                { name: "影厅地点", ref: "location", type: "text" , content: item.theaterLocation },
             ];
         }
     }

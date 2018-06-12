@@ -38,20 +38,30 @@ export default {
     },
     updated(){
         const id = this.$route.query.id;
+        let col,row;
         this.$nextTick(() => {
             if(id){
                 this.$refs.query.value = id;
             }
-            const count = this.$route.query.count || 12;
-            const row = this.$route.query.row || 12;
-            this.layout(count,row);
-            window.onresize = () => {
-                this.layout(count,row);
+            if(this.$refs.query){
+                this.cinema.forEach((item,index)=>{
+                    if(item.theaterId == this.$refs.query.value){
+                        col = item.theaterSeatColsCount;
+                        row = item.theaterSeatRowsCount;
+                    }
+                });
+                this.layout(col,row);
+                window.onresize = () => {
+                    this.layout(col,row);
+                }
             }
         })
     },
     computed: {
         ...mapState({
+            cinema(state){
+                return state.manger.cinema;
+            },
             cinemaMore(state){
                 return state.manger.cinemaMore
             }
@@ -66,7 +76,7 @@ export default {
         ...mapMutations(["clearCinemaMore"]),
         getCinemaMoreById(id){
             this.$store.dispatch("GETCINEMAMOREBYID", id).then(res=>{
-                // this.$pointTip(res.msg);
+                this.$pointTip(res.msg);
             });
         },
         layout(count ,row){
@@ -109,10 +119,11 @@ export default {
         queryById(){
             let id = this.$refs.query.value.trim();
             if(id === ""){
-                this.$pointTip("查询影厅Id不能为空~");
+                this.$pointTip("查询影厅id不能为空~");
                 return;
             }
             this.getCinemaMoreById(id);
+            this.$router.push(`/admin/cinema/info?id=${id}`);
         },
         updateSeatStatus(item){
             this.$confirm("此操作将修改座位状态信息").then(()=>{

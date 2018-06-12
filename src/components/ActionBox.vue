@@ -8,7 +8,10 @@
             <div class="ActionBox-main">
                 <dl v-for="(item, index) in listArr" :key="index" class="ActionBox-main-list">
                     <dt class="ActionBox-main-name">{{ item.name }}</dt>
-                    <dt><input type="text" class="ActionBox-main-input" :ref="item.ref"></dt>
+                    <dt>
+                        <input v-if="item.type==='text' || item.type==='file'" :type="item.type" class="ActionBox-main-input" :ref="item.ref">
+                        <textarea v-else-if="item.type==='textarea'" class="ActionBox-main-input" cols="30" rows="3" :ref="item.ref"></textarea>
+                    </dt>
                 </dl>
             </div>
             <div class="ActionBox-btn">
@@ -49,6 +52,27 @@ export default {
         },
 
     },
+    updated(){
+        if(this.visible === true){
+            if(this.actionType.substr(0,6) === "update"){
+                this.$nextTick(()=>{
+                    let refArr = Object.entries(this.$refs);
+                    refArr.forEach((item,index)=>{
+                        let arrKey = item[0];
+                        item[1][0].value = this.listArr[index].content;
+                    });
+                })
+            }
+        }
+        if(this.visible === false){
+            this.$nextTick(()=>{
+                let refArr = Object.entries(this.$refs);
+                refArr.forEach((item,index)=>{
+                    item[1][0].value = "";
+                });
+            });
+        }
+    },
     methods:{
         handleAction(action){
             this.$nextTick(()=>{
@@ -57,19 +81,50 @@ export default {
                     let obj = {};
                     refArr.forEach((item,index) => {
                         let arrKey = item[0];
-                        let arrValue = item[1][0].value;
+                        let arrValue;
+                        if(arrKey === "file"){
+                            arrValue = item[1][0].files[0];
+                        }else{
+                            arrValue = item[1][0].value;
+                        }
                         obj[arrKey] = arrValue;
                     });
-                    if(this.actionType === "add"){
-                        this.$store.dispatch("ADD_CINEMA",obj).then(res=>{
-                            this.$pointTip(res.msg);
-                        });
-                    }
-                    if(this.actionType === "update"){
-                        obj["theaterId"] = this.baseVal;
-                        this.$store.dispatch("UPD_CINEMA_BYID", obj).then(res=>{
-                            this.$pointTip(res.msg);
-                        });
+                    switch(this.actionType){
+                        case "addCinema":
+                            this.$store.dispatch("ADD_CINEMA",obj).then(res=>{
+                                this.$pointTip(res.msg);
+                            });
+                            break;
+                        case "updateCinema":
+                            obj["theaterId"] = this.baseVal;
+                            this.$store.dispatch("UPD_CINEMA_BYID", obj).then(res=>{
+                                this.$pointTip(res.msg);
+                            });
+                            break;
+                        case "addPlay":
+                            this.$store.dispatch("ADD_PLAY",obj).then(res=>{
+                                this.$pointTip(res.msg);
+                            });
+                            break;
+                        case "updatePlay":
+                            obj["programmeId"] = this.baseVal;
+                            this.$store.dispatch("UPD_PLAY_BYID", obj).then(res=>{
+                                this.$pointTip(res.msg);
+                            });
+                            break;
+                        case "addPlan":
+                            this.$store.dispatch("ADD_PLAN", obj).then(res => {
+                                this.$pointTip(res.msg);
+                            });
+                            break;
+                        case "updatePlan":
+                            obj["goodId"] = this.baseVal;
+                            this.$store.dispatch("UPD_PLAN_BYID",obj).then(res=>{
+                                this.$pointTip(res.msg);
+                            });
+                            break;
+                        default:
+                            break;
                     }
 
                 }

@@ -5,7 +5,7 @@
       <router-link to="/admin/cinema" class="Admin-left-module">影厅管理</router-link>
       <router-link to="/admin/play" class="Admin-left-module">剧目管理</router-link>
       <router-link to="/admin/plan" class="Admin-left-module">演出计划管理</router-link>
-      <router-link to="/admin/ticket" class="Admin-left-module">票务管理</router-link>
+      <!-- <router-link to="/admin/ticket" class="Admin-left-module">票务管理</router-link> -->
       <router-link to="/admin/user" class="Admin-left-module">用户管理</router-link>
     </div>
     <div class="Admin-right">

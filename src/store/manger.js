@@ -3,7 +3,11 @@ import * as api from '../api/index.js';
 export default{
     state: {
         cinema: [],
-        cinemaMore: []
+        cinemaMore: [],
+        play: [],
+        plan: [],
+        ticketMore: [],
+        selectTicket: [],
     },
     actions:{
         GETALLCINEMA({commit}){
@@ -108,6 +112,212 @@ export default{
             }).catch(e=>{
                 console.log(e);
             });
+        },
+        GET_ALL_PLAY({commit}){
+            return api.getAllPlay().then(res=>{
+                if(res.data.result === 200){
+                    commit("get_all_play",res.data.data);
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                })
+            })
+        },
+        GET_PLAY_BYID({commit}, id){
+            return api.getPlayById(id).then(res=>{
+                if(res.data.result === 200){
+                    commit("get_current_play", res.data.data);
+                }
+            }).catch(e=>{
+                return new Promise((resolve, reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        DEL_PLAY_BYID({commit}, id){
+            return api.delPlayById(id).then(res=>{
+                if(res.data.result === 204){       
+                    api.getAllPlay().then(res => {
+                        if(res.data.result === 200){
+                            let arr = res.data.data;
+                            commit("get_all_play", arr);
+                        }
+                    });
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                })
+            }).catch(e=>{
+                return new Promise((resolve, reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        UPD_PLAY_BYID({commit}, obj){
+            return api.updPlayById(obj.programmeId, obj.programmeName, obj.programmeDruation, obj.programmeTags, obj.programmeProfile, obj.file).then(res=>{
+                console.log(res);
+                console.log(obj);
+                if(res.data.result === 200){
+                    api.getAllPlay().then(res => {
+                        if(res.data.result === 200){
+                            let arr = res.data.data;
+                            commit("get_all_play", arr);
+                        }
+                    });
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        ADD_PLAY({commit},obj){
+            return api.addPlay(obj.programmeName, obj.programmeDruation, obj.programmeTags, obj.programmeProfile, obj.file).then(res=>{
+                if(res.data.result === 200){
+                    api.getAllPlay().then(res => {
+                        if(res.data.result === 200){
+                            let arr = res.data.data;
+                            commit("get_all_play", arr);
+                        }
+                    });
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve, reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        GET_ALL_PLAN({commit}){
+            return api.getAllPlan().then(res=>{
+                if(res.data.result === 200){
+                    let arr = res.data.data;
+                    commit("get_all_plan", arr);
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve, reject)=>{
+                    reject(e);
+                })
+            })
+        },
+        ADD_PLAN({commit}, obj){
+            return api.addPlan(obj).then(res=>{
+                if(res.data.result === 200){
+                    api.getAllPlan().then(res=>{
+                        if(res.data.result === 200){
+                            let arr = res.data.data;
+                            commit("get_all_plan", arr);
+                        }
+                    })
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        DEL_PLAN_BYID({commit}, id){
+            return api.delPlanById(id).then(res=>{
+                if(res.data.result === 200){
+                    api.getAllPlan().then(res=>{
+                        if(res.data.result === 200){
+                            let arr = res.data.data;
+                            commit("get_all_plan", arr);
+                        }
+                    });
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                })
+            }).catch(e=>{
+                return new Promise((resolve, reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        UPD_PLAN_BYID({commit}, obj){
+            return api.updPlanById(obj).then(res=>{
+                if(res.data.result === 200){
+                    api.getAllPlan().then(res=>{
+                        if(res.data.result === 200){
+                            let arr = res.data.data;
+                            commit("get_all_plan", arr);
+                        }
+                    });
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve, reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        GET_TICKETMORE_BYID({commit}, id){
+            return api.getTicketMoreById(id).then(res=>{
+                if(res.data.result === 200){
+                    commit('get_all_ticketMore', res.data.data);
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        SELECT_TICKET({commit}, obj){
+            return api.selectTicket(obj.id).then(res=>{
+                if(res.data.result === 200){
+                    api.getTicketMoreById(obj.goodId).then(res=>{
+                        if(res.data.result === 200){
+                            commit('get_all_ticketMore', res.data.data);
+                        }
+                    });
+                }
+                return new Promise((resolve,reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        PAY_TICKET({commit}, obj){
+            return api.payTicket(obj).then(res=>{
+                if(res.data.result === 200){
+                    api.getTicketMoreById(obj.goodId).then(res=>{
+                        if(res.data.result === 200){
+                            commit('get_all_ticketMore', res.data.data);
+                        }
+                    });
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                });
+            });
         }
         
     },
@@ -120,6 +330,21 @@ export default{
         },
         clearCinemaMore(state){
             state.cinemaMore = [];
+        },
+        get_all_play(state,data){
+            state.play = data;
+        },
+        get_all_plan(state, data){
+            state.plan = data;
+        },
+        get_all_ticketMore(state,data){
+            state.ticketMore = data;
+        },
+        clearTicketMore(state){
+            state.ticketMore = [];
+        },
+        upd_select_ticket(state, data){
+            state.selectTicket = data;
         }
     }
 }

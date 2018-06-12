@@ -31,10 +31,15 @@ export default {
         transform: translateX(-50%);
         z-index: 1997;
         border-radius: 5px;
-        padding: 10px 20px;
+        padding: 10px 20px 10px 30px;
         text-align: center;
-        color: #fff;
-        background-color: rgba(0, 0, 0, .6);
+        color: #888;
+        background-color: #EDF2FC;
+        background-image: url("../../assets/tip.png");
+        background-position: 5px 10px;
+        background-repeat: no-repeat;
+        background-size: 20px;
+        font-size: 14px;    
         &-top{
             top: 10%;
         }

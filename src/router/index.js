@@ -10,7 +10,10 @@ import PlayInfo from '../components/PlayInfo.vue';
 import Plan from '../components/Plan.vue'
 import PlanName from '../components/PlanName.vue'
 import Ticket from '../components/Ticket.vue'
+import TicketName from '../components/TicketName.vue'
+import TicketInfo from '../components/TicketInfo.vue'
 import User from '../components/User.vue';
+import UserName from '../components/UserName.vue'
 
 import store from '../store/index.js';
 
@@ -71,18 +74,44 @@ const router = new Router({
               path: 'name',
               name: 'planName',
               component: PlanName
+            },
+            {
+              path: 'ticket',
+              name: 'ticket',
+              component: TicketInfo
             }
           ]
         },
-        {
-          path: 'ticket',
-          name: 'ticket',
-          component: Ticket
-        },
+        // {
+        //   path: 'ticket',
+        //   name: 'ticket',
+        //   component: Ticket,
+        //   redirect: 'ticket/name',
+        //   children: [
+        //     {
+        //       path: 'name',
+        //       name: 'ticketName',
+        //       component: TicketName
+        //     },
+        //     {
+        //       path: 'info',
+        //       name: 'ticketInfo',
+        //       component: TicketInfo
+        //     }
+        //   ]
+        // },
         {
           path: 'user',
           name: 'user',
-          component: User
+          redirect: 'user/name',
+          component: User,
+          children: [
+            {
+              path: "name",
+              name: 'userName',
+              component: UserName,
+            }
+          ]
         }
       ]
     },

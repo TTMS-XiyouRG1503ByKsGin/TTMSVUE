@@ -3,6 +3,7 @@
         <div class="Plan-header">演出计划管理</div>
         <div class="Plan-title">
             <router-link to="/admin/plan/name" class="Plan-title-item">演出计划名称</router-link>
+            <router-link to="/admin/plan/ticket" class="Plan-title-item">售票窗口</router-link>
         </div>
         <router-view></router-view>
     </div>
