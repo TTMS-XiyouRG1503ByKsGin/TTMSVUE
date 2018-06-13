@@ -85,7 +85,7 @@ export default {
     &-right{
       flex: 1;
       height: 100%;
-      min-width: 600px;
+      min-width: 800px;
       &-header{
         width: 100%;
         height: 90px;

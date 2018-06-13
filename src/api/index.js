@@ -262,3 +262,70 @@ export function payTicket(obj){
         withCredentials: true
     });
 };
+
+//获取所有用户
+export function getAlLUser(){
+    const url = `${URL}/User`;
+    return axios.get(url,{
+        withCredentials: true
+    });
+};
+
+//添加用户
+export function addUser(obj){
+    const url = `${URL}/User/CreateUser`;
+    let data = {
+        name: obj.name,
+        account:obj.account,
+        password: obj.password,
+        level: obj.level,
+        sex: obj.sex,
+        tel: obj.tel,
+        theaterId: obj.theaterId
+    }
+    return axios({
+        url,
+        method: "POST",
+        data,
+        withCredentials: true
+    });
+}
+
+//根据id删除用户
+export function delUser(id){
+    const url = `${URL}/User/DeleteUser/${id}`;
+    return axios({
+        url,
+        method: "DELETE",
+        withCredentials: true
+    });
+};
+
+//修改用户
+export function updUser(obj){
+    console.log(obj);
+    const urlLevel = `${URL}/User/UpdateUserLevel`;
+    const urlPass = `${URL}/User/UpdateUserPassword`;
+    const urlTel = `${URL}/User/UpdateUserTel`;
+
+    let arr = [];
+    arr.push(axios({
+        url: urlLevel,
+        method: "POST",
+        data: {id: obj.userId, level: obj.level},
+        withCredentials: true
+    }));
+    arr.push(axios({
+        url: urlPass,
+        method: "POST",
+        data: {id: obj.userId, password: obj.password},
+        withCredentials: true
+    }));
+    arr.push(axios({
+        url: urlTel,
+        method: "POST",
+        data: {id: obj.userId, tel: obj.tel},
+        withCredentials: true
+    }));
+    return Promise.all(arr);
+}

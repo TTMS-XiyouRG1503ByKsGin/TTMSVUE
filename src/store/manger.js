@@ -8,6 +8,7 @@ export default{
         plan: [],
         ticketMore: [],
         selectTicket: [],
+        user: [],
     },
     actions:{
         GETALLCINEMA({commit}){
@@ -318,8 +319,83 @@ export default{
                     reject(e);
                 });
             });
+        },
+        GET_ALL_USER({commit}){
+            return api.getAlLUser().then(res=>{
+                if(res.data.result === 200){
+                    commit("get_all_user", res.data.data);
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res);
+                });
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        ADD_USER({commit}, obj){
+            return api.addUser(obj).then(res=>{
+                if(res.data.result === 200){
+                    api.getAlLUser().then(res=>{
+                        if(res.data.result === 200){
+                            commit("get_all_user", res.data.data);
+                        }
+                    });
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                })
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        UPD_USER_BYID({commit}, obj){
+            return api.updUser(obj).then(res=>{
+                if(res.every(item=>{
+                    return item.data.result === 200;
+                })){
+                    api.getAlLUser().then(res=>{
+                        if(res.data.result === 200){
+                            commit("get_all_user", res.data.data);
+                        }
+                    });
+                }
+                return new Promise((resolve,reject)=>{
+                    if(res.every(item=>{
+                        return item.data.result === 200;
+                    })){
+                        resolve("更新成功");
+                    }else{
+                        resolve("更新失败");
+                    }
+                });
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                })
+            });
+        },
+        DEL_USER_BYID({commit}, id){
+            return api.delUser(id).then(res=>{
+                if(res.data.result === 204){
+                    api.getAlLUser().then(res=>{
+                        if(res.data.result === 200){
+                            commit("get_all_user", res.data.data);
+                        }
+                    });
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                }) 
+            });
         }
-        
     },
     mutations:{
         getAllCinema(state, obj){
@@ -345,6 +421,9 @@ export default{
         },
         upd_select_ticket(state, data){
             state.selectTicket = data;
-        }
+        },
+        get_all_user(state, data){
+            state.user = data;
+        },
     }
 }

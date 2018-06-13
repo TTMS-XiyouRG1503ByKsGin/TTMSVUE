@@ -152,12 +152,14 @@ export default {
                 }
                 &-cinema{
                     padding: 0 10px;
+                    width: 150px;
+                    text-align: center;
                     text-overflow: ellipsis;
                     overflow: hidden;
                     white-space: nowrap;
                 }
                 &-play{
-                    flex: 1;
+                    // flex: 1;
                     text-overflow: ellipsis;
                     overflow: hidden;
                     white-space: nowrap;
@@ -165,13 +167,18 @@ export default {
                     text-align: center;
                 }
                 &-time{
-                    padding: 0 20px 0 10px;
+                    flex: 1;
+                    padding: 0 10px;
+                    width: 130px;
                     text-overflow: ellipsis;
                     overflow: hidden;
                     white-space: nowrap;
+                    text-align: center;
                 }
                 &-price{
                     padding: 0 10px;
+                    width: 60px;
+                    text-align: center;
                 }
                 &-action{
                     width: 190px;

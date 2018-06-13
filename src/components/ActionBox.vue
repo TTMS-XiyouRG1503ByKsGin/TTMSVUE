@@ -9,7 +9,7 @@
                 <dl v-for="(item, index) in listArr" :key="index" class="ActionBox-main-list">
                     <dt class="ActionBox-main-name">{{ item.name }}</dt>
                     <dt>
-                        <input v-if="item.type==='text' || item.type==='file'" :type="item.type" class="ActionBox-main-input" :ref="item.ref">
+                        <input v-if="item.type==='text' || item.type==='file' || item.type ==='password'" :type="item.type" class="ActionBox-main-input" :ref="item.ref">
                         <textarea v-else-if="item.type==='textarea'" class="ActionBox-main-input" cols="30" rows="3" :ref="item.ref"></textarea>
                     </dt>
                 </dl>
@@ -121,6 +121,22 @@ export default {
                             obj["goodId"] = this.baseVal;
                             this.$store.dispatch("UPD_PLAN_BYID",obj).then(res=>{
                                 this.$pointTip(res.msg);
+                            });
+                            break;
+                        case "addUser":
+                            if(obj.password !== obj.confirmPassword){
+                                this.$pointTip("两次密码输入有误");
+                                return;
+                            }
+                            obj["theaterId"] = -1;
+                            this.$store.dispatch("ADD_USER", obj).then(res=>{
+                                this.$pointTip(res.msg);
+                            });
+                            break;
+                        case "updateUser":
+                            obj["userId"] = this.baseVal;
+                            this.$store.dispatch("UPD_USER_BYID", obj).then(res=>{
+                                this.$pointTip(res);
                             });
                             break;
                         default:

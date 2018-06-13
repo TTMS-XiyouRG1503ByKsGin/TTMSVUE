@@ -29,7 +29,7 @@ export default {
         position: fixed;
         left: 50%;
         transform: translateX(-50%);
-        z-index: 1997;
+        z-index: 3000;
         border-radius: 5px;
         padding: 10px 20px 10px 30px;
         text-align: center;
