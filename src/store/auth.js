@@ -5,7 +5,7 @@ export default {
     state: {
         account: sessionStorage.getItem("account"),
         token: sessionStorage.getItem("token"),
-        userId: sessionStorage.getItem("userInfo"),
+        userInfo: JSON.parse(sessionStorage.getItem('userInfo')),
     },
     actions: {
         getVercode({commit}){
@@ -60,8 +60,9 @@ export default {
             sessionStorage.removeItem("userInfo");
         },
         getUserInfo(state,data){
+            console.log(data);
             state.userInfo = data;
-            sessionStorage.setItem("userInfo",data.userId);
+            sessionStorage.setItem("userInfo",JSON.stringify(data));
         }
     }
 }

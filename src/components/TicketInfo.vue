@@ -24,7 +24,7 @@
                 </div>
             </div>
         </div>
-        <ticket-box :visible="visible" :currentPlan="currentPlan" :selectTicket="arr" @changeVisible="changeVisible"></ticket-box>
+        <ticket-box v-if="visible" :visible="visible" :currentPlan="currentPlan" :selectTicket="selectTicket" @changeVisible="changeVisible" @changeSelect="changeSelect"></ticket-box>
     </div>
 </template>
 
@@ -60,9 +60,9 @@ export default {
             if(id){
                 this.$refs.query.value = id;
             }
-            if(this.$refs.query){
+            // if(this.$refs.query){
                 this.plan.forEach((item,index)=>{
-                    if(item.goodId == this.$refs.query.value){
+                    if(item.goodId == this.$route.query.id){
                         theaterId = item.theaterId;
                         this.currentPlan = item;
                     }
@@ -77,7 +77,7 @@ export default {
                 window.onresize = () => {
                     this.layout(col,row);
                 }
-            }
+            // }
         });
     },
     computed:{
@@ -91,11 +91,11 @@ export default {
             ticketMore(state){
                 return state.manger.ticketMore;
             },
-            userId(state){
-                console.log(state);
-                return state.auth.userId;
-            }
         }),
+        userId(){
+            console.log(this.$store.state)
+            return this.$store.state.auth.userInfo.userId; 
+        }
     },
     beforeDestroy(){
         if(this.ticketMore.length){
@@ -197,36 +197,22 @@ export default {
             this.selectTicket.forEach((item,index)=>{
                 let id = item.id;
                 let goodId = this.$route.query.id;
-                let obj = {id,goodId};
+                let userId = this.userId;
+                let obj = {id,goodId,userId};
                 this.$store.dispatch("SELECT_TICKET",obj).then(res=>{
                     if(res.result === 200){
-                        let info = "座位信息:";
-                        for(let i=0; i<this.selectTicket.length; i++){
-                            info += this.selectTicket[i].seatRowNumber +'行'+this.selectTicket[i].seatColNumber+'列 ';
-                        }
-                        this.$confirm(info).then(()=>{
-                            let o = {ticketId:id, userId: this.userId, goodId:this.$route.query.id};
-                            console.log(o);
-                            this.$store.dispatch("PAY_TICKET",o).then(res=>{
-                                this.$pointTip(res.msg);
-                                console.log(res);
-                                if(res.result===200){
-                                    this.isFinish = true;
-                                    this.arr = this.selectTicket;
-                                    this.selectTicket = [];
-                                    this.visible = true;
-                                    
-                                }
-                            });
-                        }).catch(e=>{
-                            console.log(e);
-                        })
+                        this.isFinish = true;
+                        this.visible = true;
                     }
+                    this.$pointTip(res.msg);
                 });
             })
         },
         changeVisible(visible){
             this.visible = visible;
+        },
+        changeSelect(arr){
+            this.selectTicket = arr;
         }
     }
 }

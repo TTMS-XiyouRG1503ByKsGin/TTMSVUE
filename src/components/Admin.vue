@@ -7,6 +7,7 @@
       <router-link to="/admin/plan" class="Admin-left-module">演出计划管理</router-link>
       <!-- <router-link to="/admin/ticket" class="Admin-left-module">票务管理</router-link> -->
       <router-link to="/admin/user" class="Admin-left-module">用户管理</router-link>
+      <router-link to="/admin/order" class="Admin-left-module">订单管理</router-link>
     </div>
     <div class="Admin-right">
       <div class="Admin-right-header">

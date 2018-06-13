@@ -1,14 +1,14 @@
 <template>
-    <div class="TicketBox" v-if="visible">
+    <div class="TicketBox">
         <div class="TicketBox-content">
             <div class="TicketBox-content-header">
-                <span class="TicketBox-content-header-title">购票成功</span>
-                <span class="TicketBox-content-header-close" @click="changeVisible(false)">X</span>
+                <span class="TicketBox-content-header-title">提示</span>
+                <span class="TicketBox-content-header-close" @click="closeBox">X</span>
             </div>
             <div class="TicketBox-content-main">
                 <div class="TicketBox-content-main-top">
                     <div class="TicketBox-content-main-top-img">
-                        <img :src="picUrl + this.currentPlay.programmeImagePath" alt="" />
+                        <img v-if="currentPlay" :src="picUrl + this.currentPlay.programmeImagePath" alt="" />
                     </div>
                     <div class="TicketBox-content-main-top-info">
                         <div class="TicketBox-content-main-top-info-name">{{currentPlay.programmeName}}</div>
@@ -23,6 +23,7 @@
                     <div>座位：<span class="TicketBox-content-main-center-ticket" v-for="(item, index) in selectTicket" :key="index">{{item.seatRowNumber}}行{{item.seatColNumber}}列</span></div>
                 </div>
                 <div class="TicketBox-content-main-bottom">总价：<span>￥</span><span>{{totalPrice}}</span></div>
+                <div class="TicketBox-content-main-btn" @click="confirmBuy">确认支付</div>
             </div>
         </div>
     </div>
@@ -50,14 +51,22 @@ export default {
         },
     },
     created(){
-        //当前剧目信息
         let programmeId = this.currentPlan.programmeId;
-        this.play.forEach((item,index)=>{
-            if(item.programmeId === programmeId){
-                this.currentPlay = item;
-                // console.log(item);
-            }
-        });
+        if(!this.play.length){
+            this.$store.dispatch("GET_ALL_PLAY").then(res=>{
+                this.play.forEach((item,index)=>{
+                    if(item.programmeId === programmeId){
+                        this.currentPlay = item;
+                    }
+                });
+            });
+        }else{
+            this.play.forEach((item,index)=>{
+                if(item.programmeId === programmeId){
+                    this.currentPlay = item;
+                }
+            });
+        }
 
     },
     computed:{
@@ -66,12 +75,31 @@ export default {
         },
         totalPrice(){
             return this.currentPlan.price * this.selectTicket.length;
+        },
+        userId(){
+            return this.$store.state.auth.userInfo.userId;
         }
     },
     methods:{
+        closeBox(){
+            this.changeVisible(false);
+            this.$emit("changeSelect",[]);
+        },
         changeVisible(visible){
             this.$emit("changeVisible",visible);
         },
+        confirmBuy(){
+            this.selectTicket.forEach((item,index)=>{
+                let o = {ticketId: item.id, userId: this.userId, goodId:this.$route.query.id};
+                this.$store.dispatch("PAY_TICKET",o).then(res=>{
+                    this.$pointTip(res.msg);
+                    if(res.result===200){
+                        this.changeVisible(false);
+                        this.$emit("changeSelect",[]);
+                    }
+                });
+            })
+        }
     },
     filters:{
         filterDate(date){
@@ -99,7 +127,7 @@ export default {
             transform: translate(-50%,-50%);
             width: 330px;
             background-color: #f9f9f9;
-            border-radius: 3px;
+            border-radius: 5px;
             padding: 20px;
             overflow: hidden;
             &-header{
@@ -184,6 +212,16 @@ export default {
                             font-size: 24px;
                         }
                     }
+                }
+                &-btn{
+                    margin: 10px 0;
+                    cursor: pointer;
+                    padding: 10px 0;
+                    background-color: #f03d37;
+                    color: #fff;
+                    font-size: 16px;
+                    border-radius: 20px;
+                    text-align: center;
                 }
             }
         }

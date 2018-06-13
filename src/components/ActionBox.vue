@@ -11,6 +11,9 @@
                     <dt>
                         <input v-if="item.type==='text' || item.type==='file' || item.type ==='password'" :type="item.type" class="ActionBox-main-input" :ref="item.ref">
                         <textarea v-else-if="item.type==='textarea'" class="ActionBox-main-input" cols="30" rows="3" :ref="item.ref"></textarea>
+                        <select v-else-if="item.type ==='select'" class="ActionBox-main-input" :ref="item.ref">
+                            <option v-for="(t, index) in item.option" :key="index" :data-id="t.id">{{t.name}}</option>
+                        </select>
                     </dt>
                 </dl>
             </div>
@@ -82,10 +85,15 @@ export default {
                     refArr.forEach((item,index) => {
                         let arrKey = item[0];
                         let arrValue;
-                        if(arrKey === "file"){
-                            arrValue = item[1][0].files[0];
+                        if(item[1][0].type === "select-one"){
+                            let i = item[1][0].selectedIndex;
+                            arrValue = item[1][0][i].getAttribute("data-id");
                         }else{
-                            arrValue = item[1][0].value;
+                            if(arrKey === "file"){
+                                arrValue = item[1][0].files[0];
+                            }else{
+                                arrValue = item[1][0].value;
+                            }
                         }
                         obj[arrKey] = arrValue;
                     });

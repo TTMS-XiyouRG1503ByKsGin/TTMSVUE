@@ -244,8 +244,8 @@ export function getTicketMoreById(id){
 }
 
 //根据id订票
-export function selectTicket(id){
-    const url = `${URL}/Ticket/SellTicket/${id}`;
+export function selectTicket(obj){
+    const url = `${URL}/Ticket/NewSellTicket/${obj.id}&${obj.userId}`;
     return axios({
         url,
         method:"post",
@@ -303,7 +303,6 @@ export function delUser(id){
 
 //修改用户
 export function updUser(obj){
-    console.log(obj);
     const urlLevel = `${URL}/User/UpdateUserLevel`;
     const urlPass = `${URL}/User/UpdateUserPassword`;
     const urlTel = `${URL}/User/UpdateUserTel`;
@@ -329,3 +328,11 @@ export function updUser(obj){
     }));
     return Promise.all(arr);
 }
+
+//获取指定用户未完成订单
+export function getAllUnfinished(id){
+    const url = `${URL}/Order/SelectUnPaidOrder/${id}`
+    return axios.get(url,{
+        withCredentials: true
+    });
+};

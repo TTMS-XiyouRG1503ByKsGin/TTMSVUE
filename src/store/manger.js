@@ -9,6 +9,7 @@ export default{
         ticketMore: [],
         selectTicket: [],
         user: [],
+        unfinished: [],
     },
     actions:{
         GETALLCINEMA({commit}){
@@ -80,9 +81,9 @@ export default{
                 console.log(e);
             })
         },
-        DEL_CINEMA_BYID({commit},obj){
-            return api.delCinemaById(obj.theaterId, obj.theaterName, obj.location, obj.mapSite).then(res=>{
-                if(res.data.result === 200){
+        DEL_CINEMA_BYID({commit},id){
+            return api.delCinemaById(id).then(res=>{
+                if(res.data.result === 204){
                     api.getCinemaAll().then(res => {
                         if(res.data.result === 200){
                             let arr = res.data.data;
@@ -285,7 +286,7 @@ export default{
             });
         },
         SELECT_TICKET({commit}, obj){
-            return api.selectTicket(obj.id).then(res=>{
+            return api.selectTicket(obj).then(res=>{
                 if(res.data.result === 200){
                     api.getTicketMoreById(obj.goodId).then(res=>{
                         if(res.data.result === 200){
@@ -361,6 +362,8 @@ export default{
                         if(res.data.result === 200){
                             commit("get_all_user", res.data.data);
                         }
+                    }).catch(e=>{
+                        consoe.log(e);
                     });
                 }
                 return new Promise((resolve,reject)=>{
@@ -395,7 +398,41 @@ export default{
                     reject(e);
                 }) 
             });
-        }
+        },
+        GET_ALL_UNFINISHED({commit},id){
+            return api.getAllUnfinished(id).then(res=>{
+                if(res.data.result === 200){
+                    commit("get_all_unfinished", res.data.data);
+                }
+                return new Promise((resolve,reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                });
+            });
+        },
+        RE_PAY_TICKET({commit}, obj){
+            return api.payTicket(obj).then(res=>{
+                if(res.data.result === 200){
+                    api.getAllUnfinished(obj.userId).then(res=>{
+                        if(res.data.result === 200){
+                            commit("get_all_unfinished", res.data.data);
+                        }
+                    }).catch(e=>{
+                        console.log(e);
+                    });
+                }
+                return new Promise((resolve,reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve,reject)=>{
+                    reject(e);
+                });
+            });
+        },
     },
     mutations:{
         getAllCinema(state, obj){
@@ -425,5 +462,8 @@ export default{
         get_all_user(state, data){
             state.user = data;
         },
+        get_all_unfinished(state, data){
+            state.unfinished = data;
+        }
     }
 }

@@ -51,18 +51,32 @@ export default {
         this.$store.dispatch("GET_ALL_PLAN");
     },
     computed: {
+        cinema(){
+            return this.$store.state.manger.cinema;
+        },
+        play(){
+            return this.$store.state.manger.play;
+        },
         plan(){
             return this.$store.state.manger.plan;
         }
     },
     methods: {
         addPlan(){
+            let optionCinema = this.cinema.map((item,index)=>{
+                let obj = {id: item.theaterId, name: item.theaterName};
+                return obj;
+            });
+            let optionPlay = this.play.map((item,index)=>{
+                let obj = {id: item.programmeId, name: item.programmeName};
+                return obj;
+            })
             this.actionType = "addPlan";
             this.visible = true;
             this.title = "添加";
             this.listArr = [
-                { name: "影厅ID", ref: "theaterId", type: "text" },
-                { name: "剧目ID", ref: "programmeId", type: "text" },
+                { name: "影厅名称", ref: "theaterId", type: "select", option: optionCinema },
+                { name: "剧目名称", ref: "programmeId", type: "select", option:  optionPlay },
                 { name: "演出日期", ref: "playDate", type: "text" },
                 { name: "演出时间", ref: "performance", type: "text" },
                 { name: "票价", ref: "price", type: "text" }

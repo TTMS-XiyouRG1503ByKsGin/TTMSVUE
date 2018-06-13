@@ -14,6 +14,8 @@ import TicketName from '../components/TicketName.vue'
 import TicketInfo from '../components/TicketInfo.vue'
 import User from '../components/User.vue';
 import UserName from '../components/UserName.vue'
+import Order from '../components/Order.vue'
+import Unfinished from '../components/Unfinished.vue'
 
 import store from '../store/index.js';
 
@@ -82,24 +84,6 @@ const router = new Router({
             }
           ]
         },
-        // {
-        //   path: 'ticket',
-        //   name: 'ticket',
-        //   component: Ticket,
-        //   redirect: 'ticket/name',
-        //   children: [
-        //     {
-        //       path: 'name',
-        //       name: 'ticketName',
-        //       component: TicketName
-        //     },
-        //     {
-        //       path: 'info',
-        //       name: 'ticketInfo',
-        //       component: TicketInfo
-        //     }
-        //   ]
-        // },
         {
           path: 'user',
           name: 'user',
@@ -110,6 +94,19 @@ const router = new Router({
               path: "name",
               name: 'userName',
               component: UserName,
+            }
+          ]
+        },
+        {
+          path: 'order',
+          name: 'order',
+          redirect: 'order/unfinished',
+          component: Order,
+          children: [
+            {
+              path: 'unfinished',
+              name: 'unfinished',
+              component: Unfinished,
             }
           ]
         }
