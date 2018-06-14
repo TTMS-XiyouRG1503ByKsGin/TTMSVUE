@@ -77,6 +77,7 @@ export default {
                 let obj = {id: item.programmeId, name: item.programmeName};
                 return obj;
             })
+            let optionTime = ["早一","早二","午一","午二","晚一","晚二","午夜"];
             this.actionType = "addPlan";
             this.visible = true;
             this.title = "添加";
@@ -84,7 +85,7 @@ export default {
                 { name: "影厅名称", ref: "theaterId", type: "select", option: optionCinema },
                 { name: "剧目名称", ref: "programmeId", type: "select", option:  optionPlay },
                 { name: "演出日期", ref: "playDate", type: "text" },
-                { name: "演出时间", ref: "performance", type: "text" },
+                { name: "演出场次", ref: "performance", type: "select", option: optionTime },
                 { name: "票价", ref: "price", type: "text" }
             ];
         },
@@ -104,9 +105,17 @@ export default {
             this.visible = true;
             this.baseVal = item.goodId;
             this.title = "修改";
+            let optionTime = ["早一","早二","午一","午二","晚一","晚二","午夜"];
+            let selectedIndex = -1;
+            for(let i=0; i< optionTime.length; i++){
+                if(item.performance === optionTime[i]){
+                    selectedIndex = i;
+                    break;
+                }
+            }
             this.listArr = [
                 { name: "演出日期", ref: "playDate", type: "text", content: item.playDate },
-                { name: "演出场次", ref: "performance", type: "text", content: item.performance },
+                { name: "演出场次", ref: "performance", type: "select", option: optionTime, selectedIndex: selectedIndex},
                 { name: "票价", ref: "price", type: "text", content: item.price }
             ];
         },

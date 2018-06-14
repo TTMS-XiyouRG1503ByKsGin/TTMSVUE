@@ -10,17 +10,20 @@
                     <span class="Unfinished-content-main-time">演出时间</span>
                     <span class="Unfinished-content-main-action">操作</span>
                 </div>
-                <div class="Unfinished-content-main-list">
+                <div class="Unfinished-content-main-list" v-if="unfinished.length">
                     <div class="Unfinished-content-main-list-item " v-for="(item, index) in unfinished" :key="item.theaterId">
                         <span class="Unfinished-content-main-name">{{ item.name }}</span>
                         <span class="Unfinished-content-main-location">{{ item.theaterName }}</span>
                         <span class="Unfinished-content-main-seat">{{item.seatRowNumber}}行{{item.seatColNumber}}列</span>
                         <span class="Unfinished-content-main-price">{{ item.price }}</span>
-                        <span class="Unfinished-content-main-time">{{ item.date | filterTime }}</span>
+                        <span class="Unfinished-content-main-time">{{ item.date | filterTime }} {{item.performance}}</span>
                         <span class="Unfinished-content-main-action">
                             <a href="javascript:void(0)" class="Unfinished-content-main-action-mor action-btn" @click="() =>{buyTicket(item,index)}">支付</a>
                         </span>
                     </div>
+                </div>
+                <div class="Unfinished-content-main-none" v-else>
+                    暂无数据~
                 </div>
             </div>
         </div>
@@ -60,7 +63,7 @@ export default {
             let arr = time.split("T");
             let date = arr[0];
             let t = arr[1].substr(0, 5);
-            return date + " " + t;
+            return date + " ";
         }
     }
 }
@@ -77,6 +80,7 @@ export default {
             &-main{
                 // margin-top: 50px;
                 // height: calc(100% - 50px);
+                position: relative;
                 height: 100%;
                 border: 1px solid #DBD9E1;
                 background-color: #fff;
@@ -94,6 +98,7 @@ export default {
                     }
                 }
                 &-name{
+                    width: 150px;
                     padding: 0 20px;
                     text-align: center;
                 }
@@ -103,15 +108,14 @@ export default {
                     text-align: center;
                 }
                 &-seat{
+                    width: 130px;
                     padding:  0 20px;
                     text-align: center;
                 }
                 &-price{
                     padding: 0 20px;
                     text-align: center;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    white-space: nowrap;
+                    width: 80px;
                 }
                 &-time{
                     padding: 0 20px;
@@ -189,6 +193,14 @@ export default {
                             background-color: #FAFAFA;
                         }
                     }
+                }
+                &-none{
+                    text-align: center;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 24px;
                 }
             }
         }

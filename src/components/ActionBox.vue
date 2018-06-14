@@ -11,8 +11,11 @@
                     <dt>
                         <input v-if="item.type==='text' || item.type==='file' || item.type ==='password'" :type="item.type" class="ActionBox-main-input" :ref="item.ref">
                         <textarea v-else-if="item.type==='textarea'" class="ActionBox-main-input" cols="30" rows="3" :ref="item.ref"></textarea>
-                        <select v-else-if="item.type ==='select'" class="ActionBox-main-input" :ref="item.ref">
+                        <select v-if="item.type ==='select' && item.ref!=='performance'" class="ActionBox-main-input" :ref="item.ref">
                             <option v-for="(t, index) in item.option" :key="index" :data-id="t.id">{{t.name}}</option>
+                        </select>
+                        <select v-if="item.type ==='select' && item.ref==='performance'" class="ActionBox-main-input" :ref="item.ref">
+                            <option v-for="(t, index) in item.option" :key="index">{{t}}</option>
                         </select>
                     </dt>
                 </dl>
@@ -62,7 +65,11 @@ export default {
                     let refArr = Object.entries(this.$refs);
                     refArr.forEach((item,index)=>{
                         let arrKey = item[0];
-                        item[1][0].value = this.listArr[index].content;
+                        if(arrKey === "performance"){
+                            item[1][0].selectedIndex = this.listArr[index].selectedIndex;
+                        }else{
+                            item[1][0].value = this.listArr[index].content;
+                        }
                     });
                 })
             }
@@ -87,7 +94,11 @@ export default {
                         let arrValue;
                         if(item[1][0].type === "select-one"){
                             let i = item[1][0].selectedIndex;
-                            arrValue = item[1][0][i].getAttribute("data-id");
+                            if(this.listArr[index].ref === "performance"){
+                                arrValue = item[1][0][i].value;
+                            }else{
+                                arrValue = item[1][0][i].getAttribute("data-id");
+                            }
                         }else{
                             if(arrKey === "file"){
                                 arrValue = item[1][0].files[0];

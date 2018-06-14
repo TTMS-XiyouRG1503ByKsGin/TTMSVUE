@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // const URL = "http://123.206.82.241:8080";
-const URL = "http://localhost:8088";
-// const URL = "http://lijiawei.com.cn:8088";
+// const URL = "http://localhost:8088";
+const URL = "http://lijiawei.com.cn:8088";
 
 //获取验证码
 export function getVercode(){
@@ -339,3 +339,23 @@ export function getAllUnfinished(id){
         withCredentials: true
     });
 };
+
+//筛选订单信息
+export function getFinished(obj){
+    const url = `${URL}/Order/SelectOrder`;
+    if(obj){
+        return axios({
+            url,
+            method: "POST",
+            data: obj,
+            withCredentials: true
+        });
+    }else{
+        return axios({
+            url,
+            method: "POST",
+            data: {},
+            withCredentials: true
+        });
+    };
+}

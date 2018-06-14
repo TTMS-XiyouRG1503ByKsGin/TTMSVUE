@@ -10,6 +10,7 @@ export default{
         selectTicket: [],
         user: [],
         unfinished: [],
+        finished: [],
     },
     actions:{
         GETALLCINEMA({commit}){
@@ -431,6 +432,21 @@ export default{
                 });
             });
         },
+        GET_FINISHED({commit}, obj){
+            return api.getFinished(obj).then(res=>{
+                if(res.data.result === 200){
+                    console.log(res);
+                    commit("get_finished",res.data.data);
+                }
+                return new Promise((resolve, reject)=>{
+                    resolve(res.data);
+                });
+            }).catch(e=>{
+                return new Promise((resolve, reject)=>{
+                    reject(e);
+                });
+            });
+        },
     },
     mutations:{
         getAllCinema(state, obj){
@@ -462,6 +478,9 @@ export default{
         },
         get_all_unfinished(state, data){
             state.unfinished = data;
+        },
+        get_finished(state, data){
+            state.finished = data;
         }
     }
 }

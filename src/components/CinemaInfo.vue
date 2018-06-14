@@ -31,6 +31,9 @@ export default {
         }
     },
     created(){
+        if(!this.cinema.length){
+            this.$store.dispatch("GETALLCINEMA");
+        }
         const id = this.$route.query.id;
         if(id){
             this.getCinemaMoreById(id);

@@ -16,7 +16,9 @@ import User from '../components/User.vue';
 import UserName from '../components/UserName.vue'
 import Order from '../components/Order.vue'
 import Unfinished from '../components/Unfinished.vue'
+import Finished from '../components/Finished.vue'
 import Hello from '../components/Hello.vue';
+
 import store from '../store/index.js';
 
 Vue.use(Router)
@@ -120,6 +122,11 @@ export const dynamicRoutesAdmin = [
             path: 'unfinished',
             name: 'unfinished',
             component: Unfinished,
+          },
+          {
+            path: 'finished',
+            name: 'finished',
+            component: Finished
           }
         ]
       }

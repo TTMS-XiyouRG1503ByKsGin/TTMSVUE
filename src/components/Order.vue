@@ -3,6 +3,7 @@
         <div class="Order-header">订单管理</div>
         <div class="Order-title">
             <router-link to="/admin/order/unfinished" class="Order-title-item">未完成订单</router-link>
+            <router-link v-if="userLevel !== '售票员'" to="/admin/order/finished" class="Order-title-item">订单分析</router-link>
         </div>
         <router-view></router-view>
     </div>
@@ -14,6 +15,11 @@ export default {
     data(){
         return{
 
+        }
+    },
+    computed: {
+        userLevel(){
+            return this.$store.state.auth.userInfo.userLevel;
         }
     }
 }
