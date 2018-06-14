@@ -11,6 +11,13 @@ Vue.config.productionTip = false
 
 Vue.use(pointTip);
 Vue.use(confirm);
+let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+console.log(sessionStorage.getItem("userInfo"));
+if(userInfo){
+  console.log(123);
+  router.addRoutes(store.getters.dynamicRoutes);
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

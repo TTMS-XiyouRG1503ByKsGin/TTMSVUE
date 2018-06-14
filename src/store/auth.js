@@ -1,11 +1,17 @@
 import * as api from '../api/index.js';
 import md5 from 'md5';
+import { dynamicRoutesAdmin, dynamicRoutesSeller } from '../router/index.js';
 
 export default {
     state: {
         account: sessionStorage.getItem("account"),
         token: sessionStorage.getItem("token"),
         userInfo: JSON.parse(sessionStorage.getItem('userInfo')),
+    },
+    getters:{
+        dynamicRoutes: state =>{
+            return !state.userInfo ? [] : state.userInfo.userLevel === '售票员' ? dynamicRoutesSeller : dynamicRoutesAdmin;
+        }
     },
     actions: {
         getVercode({commit}){

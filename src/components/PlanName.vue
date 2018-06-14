@@ -49,6 +49,12 @@ export default {
     },
     created(){
         this.$store.dispatch("GET_ALL_PLAN");
+        if(!this.cinema.length){
+            this.$store.dispatch("GETALLCINEMA");
+        }
+        if(!this.play.length){
+            this.$store.dispatch("GET_ALL_PLAY");
+        }
     },
     computed: {
         cinema(){

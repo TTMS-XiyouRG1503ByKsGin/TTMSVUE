@@ -160,9 +160,7 @@ export default{
             });
         },
         UPD_PLAY_BYID({commit}, obj){
-            return api.updPlayById(obj.programmeId, obj.programmeName, obj.programmeDruation, obj.programmeTags, obj.programmeProfile, obj.file).then(res=>{
-                console.log(res);
-                console.log(obj);
+            return api.updPlayById(obj).then(res=>{
                 if(res.data.result === 200){
                     api.getAllPlay().then(res => {
                         if(res.data.result === 200){

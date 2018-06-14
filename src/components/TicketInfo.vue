@@ -47,9 +47,14 @@ export default {
         }
     },
     created(){
+        if(!this.plan.length){
+            this.$store.dispatch("GET_ALL_PLAN");
+        }
+        if(!this.cinema.length){
+            this.$store.dispatch("GETALLCINEMA");
+        }
         const id = this.$route.query.id;
         if(id){
-            this.GETALLCINEMA();
             this.getTicketMoreById(id);
         }
     },
@@ -173,6 +178,9 @@ export default {
                     flag = 1;
                 }
             });
+            if(item.status !== 1){
+                return;
+            }
             if(flag === 1){
                 return;
             }

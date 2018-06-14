@@ -34,6 +34,14 @@ export default {
     },
     created(){
         this.getVercode();
+        if(sessionStorage.getItem("token")){
+            this.$router.push("/admin");
+        }
+    },
+    computed:{
+        dynamicRoutes(){
+            return this.$store.getters.dynamicRoutes;
+        }
     },
     methods:{
         getVercode(){
@@ -62,14 +70,18 @@ export default {
                 vercode: this.vercode
             }
             this.$store.dispatch("login", info).then(res => {
-                this.$pointTip(res.msg);
                 if(res.result === 200){
-                    this.$router.push("/admin");
+                    this.$store.dispatch("getUserInfoByAccount",this.username).then(res=>{
+                        if(res.result === 200){
+                            console.log(this.dynamicRoutes);
+                            this.$router.addRoutes(this.dynamicRoutes);
+                            this.$router.push("/admin");
+                        }
+                        this.$pointTip(res.msg);
+                    });
                 }
             }).catch(e => {
-                // this.$pointTip(e);
             });
-            this.$store.dispatch("getUserInfoByAccount",this.username);
         },
     }
 }

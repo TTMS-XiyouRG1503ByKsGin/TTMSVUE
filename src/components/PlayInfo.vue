@@ -77,7 +77,7 @@ export default {
                 { name: "剧目名称", ref: "programmeName", type: "text", content: item.programmeName },
                 { name: "剧目分类", ref: "programmeTags", type: "text", content: item.programmeTags },
                 { name: "剧目时长", ref: "programmeDruation", type: "text", content: item.programmeDruation },
-                { name: "剧目封面", ref: "file", type: "file", content: "" },
+                { name: "剧目封面", ref: "file", type: "file", content: '' },
                 { name: "剧目简介", ref: "programmeProfile", type: "textarea", content: item.programmeProfile }
             ]
         },

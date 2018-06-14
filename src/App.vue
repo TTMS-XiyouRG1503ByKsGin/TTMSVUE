@@ -6,7 +6,13 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  created(){
+    let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+    if(!userInfo){
+      return this.$router.push("/login");
+    }
+  }
 }
 </script>
 

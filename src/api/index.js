@@ -2,6 +2,7 @@ import axios from 'axios';
 
 // const URL = "http://123.206.82.241:8080";
 const URL = "http://localhost:8088";
+// const URL = "http://lijiawei.com.cn:8088";
 
 //获取验证码
 export function getVercode(){
@@ -144,16 +145,18 @@ export function delPlayById(id){
 }
 
 //根据id更新剧目
-export function updPlayById(programmeId, programmeName, programmeDruation, programmeTags, programmeProfile, file){
+export function updPlayById(obj){
     const url = `${URL}/Programme/UpdateProgramme`;
     let data = new FormData();
-    data.append("programmeId", programmeId);
-    data.append("programmeName", programmeName);
-    data.append("duration", programmeDruation);
-    data.append("tags", programmeTags);
-    data.append("profile", programmeProfile);
-    data.append("file", file);
-
+    data.append("programmeId", obj.programmeId);
+    data.append("programmeName", obj.programmeName);
+    data.append("duration", obj.programmeDruation);
+    data.append("tags", obj.programmeTags);
+    data.append("profile", obj.programmeProfile);
+    if(obj.file){
+        data.append("file", obj.file);
+    }
+    
     return axios({
         url,
         method: "POST",

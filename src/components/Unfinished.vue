@@ -27,8 +27,8 @@
     </div>
 </template>
 <script>
-import TicketBox from './TicketBox.vue';
 export default {
+    name: 'unfinished',
     data(){
         return {
 

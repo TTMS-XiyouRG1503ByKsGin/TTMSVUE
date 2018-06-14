@@ -95,7 +95,9 @@ export default {
                                 arrValue = item[1][0].value;
                             }
                         }
-                        obj[arrKey] = arrValue;
+                        if(!(arrKey === 'file' && !item[1][0].files.length)){
+                            obj[arrKey] = arrValue;
+                        }
                     });
                     switch(this.actionType){
                         case "addCinema":

@@ -2,11 +2,11 @@
   <div class="Admin">
     <div class="Admin-left">
       <img src="../assets/logo.jpg" alt="" class="Admin-left-logo">
-      <router-link to="/admin/cinema" class="Admin-left-module">影厅管理</router-link>
-      <router-link to="/admin/play" class="Admin-left-module">剧目管理</router-link>
+      <router-link to="/admin/cinema" class="Admin-left-module" v-if="userLevel !== '售票员'">影厅管理</router-link>
+      <router-link to="/admin/play" class="Admin-left-module" v-if="userLevel !== '售票员'">剧目管理</router-link>
       <router-link to="/admin/plan" class="Admin-left-module">演出计划管理</router-link>
       <!-- <router-link to="/admin/ticket" class="Admin-left-module">票务管理</router-link> -->
-      <router-link to="/admin/user" class="Admin-left-module">用户管理</router-link>
+      <router-link to="/admin/user" class="Admin-left-module" v-if="userLevel !== '售票员'">用户管理</router-link>
       <router-link to="/admin/order" class="Admin-left-module">订单管理</router-link>
     </div>
     <div class="Admin-right">
@@ -14,7 +14,7 @@
         <span class="Admin-right-header-topic">剧院票务管理系统</span>
         <span v-if="this.token === ''" class="Admin-right-header-login">登录</span>
         <span v-else class="Admin-right-header-account">
-          欢迎：{{this.account}}
+          欢迎：{{this.userInfo.userName}}
           <span class="Admin-right-header-account-exit" @click="exit">退出</span>
         </span>
       </div>
@@ -37,6 +37,13 @@ export default {
     },
     token(){
       return this.$store.state.auth.token;
+    },
+    userInfo(){
+      return this.$store.state.auth.userInfo;
+    },
+    userLevel(){
+      console.log(this.$store.state.auth.userInfo);
+      return this.$store.state.auth.userInfo.userLevel;
     }
   },
   methods:{
