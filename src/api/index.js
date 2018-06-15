@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // const URL = "http://123.206.82.241:8080";
-// const URL = "http://localhost:8088";
-const URL = "http://lijiawei.com.cn:8088";
+const URL = "http://localhost:8088";
+// const URL = "http://lijiawei.com.cn:8088";
 
 //获取验证码
 export function getVercode(){

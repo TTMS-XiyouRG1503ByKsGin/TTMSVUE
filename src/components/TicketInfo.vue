@@ -56,6 +56,7 @@ export default {
         const id = this.$route.query.id;
         if(id){
             this.getTicketMoreById(id);
+            
         }
     },
     updated(){
@@ -166,6 +167,7 @@ export default {
             this.count = 1;
         },
         select(item,e){
+            this.isFinish = false;
             //最多选5个
             let flag = 0;
             let arr = this.selectTicket;

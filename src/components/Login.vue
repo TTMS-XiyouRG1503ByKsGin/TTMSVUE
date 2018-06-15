@@ -77,8 +77,8 @@ export default {
                             this.$router.addRoutes(this.dynamicRoutes);
                             this.$router.push("/admin");
                         }
-                        this.$pointTip(res.msg);
                     });
+                    this.$pointTip(res.msg);
                 }
             }).catch(e => {
             });
