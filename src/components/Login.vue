@@ -66,14 +66,13 @@ export default {
             }
             let info = {
                 username: this.username,
-                password: this.password,
-                vercode: this.vercode
+                password: this.password,   
+                vercode: this.vercode       
             }
             this.$store.dispatch("login", info).then(res => {
                 if(res.result === 200){
                     this.$store.dispatch("getUserInfoByAccount",this.username).then(res=>{
                         if(res.result === 200){
-                            console.log(this.dynamicRoutes);
                             this.$router.addRoutes(this.dynamicRoutes);
                             this.$router.push("/admin");
                         }
